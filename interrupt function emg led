@@ -1,0 +1,29 @@
+int led1=13;
+int led2=14;
+state=0;
+
+void setup() {
+  
+pinMode(led1,OUTPUT);
+pinMode(led2,OUTPUT);
+Timer1.initialize(300000);//function takes place after 300ms seconds intilize fuction takes time in microseconds
+Timer1.attachInterrupt(emg);
+
+}
+
+void loop() {
+
+digitalWrite(led1,HIGH);
+delay(500);
+digitalWrite(led1,LOW);
+delay(500);
+
+
+}
+
+void emg(){
+state=!state;
+digitalWrite(led2,state)
+
+}
+}
