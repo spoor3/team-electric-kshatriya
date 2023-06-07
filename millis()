@@ -1,0 +1,73 @@
+int echopin=11;
+int trigpin=12;
+float time;
+float distance;
+int pb=2;
+int dt=200;
+
+uint32_t prevTime;//to get more accuracy of 300 millision bitsize only 256 if 8 bit
+uint32_t presTime;
+
+void setup() {
+pinMode(trigpin,OUTPUT);
+pinMode(echopin,INPUT);
+//Timer1.initialize(3000000);
+//Timer1.attachInterrupt(blink);
+Serial.begin(9600);
+attachInterrupt(digitalPinToInterrupt(pb),emg,RISING);
+
+}
+void loop()
+{
+  presTime=millis();
+  if((presTime-prevTime)>3000)
+  {
+    digitalWrite(trigpin,LOW);
+    delayMicroseconds(10);
+    digitalWrite(trigpin,HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigpin,LOW);
+    time=pulseIn(echopin,HIGH);
+    delay(dt);
+    distance=(time*765.*5280.*12)/(3600.*1000000);
+    distance=distance/2;
+    Serial.print("Distance to Target is: ");
+    Serial.println(distance);
+    prevTime=millis();
+   }
+}
+
+
+void blink() {
+ // Serial.print("hello");
+  
+digitalWrite(trigpin,LOW);
+delayMicroseconds(10);
+digitalWrite(trigpin,HIGH);
+delayMicroseconds(10);
+digitalWrite(trigpin,LOW);
+time=pulseIn(echopin,HIGH);
+delay(dt);
+distance=(time*765.*5280.*12)/(3600.*1000000);
+distance=distance/2;
+Serial.print("Distance to Target is: ");
+Serial.print(distance);
+Serial.println(" in.");
+delay(dt);
+}
+
+void emg(){
+digitalWrite(trigpin,LOW);
+delayMicroseconds(10);
+digitalWrite(trigpin,HIGH);
+delayMicroseconds(10);
+digitalWrite(trigpin,LOW);
+time=pulseIn(echopin,HIGH);
+delay(dt);
+distance=(time*765.*5280.*12)/(3600.*1000000);
+distance=distance/2;
+Serial.print("Distance to Target is: ");
+Serial.print(distance);
+Serial.println(" in.");
+delay(dt);
+}
